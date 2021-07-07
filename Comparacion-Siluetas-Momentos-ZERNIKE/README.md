@@ -42,7 +42,37 @@ aspectos
     return cont_aciertos, cont_fallos
 ```
 - Generación de gráfica para indicar la presición del descriptor de Zernike 
-![](graficaPresicionValores.png)
+```sh
+  def generarGraficaDePrecision(valores_reales, valores_prediccion_aciertos, valores_prediccion_fallos, directorios):
+    #Obtenemos la posicion de cada etiqueta en el eje de X
+    x = np.arange(len(directorios))
+    #tamaño de cada barra
+    width = 0.30
+
+    #Generamos las barras para el conjunto de personas acostadas
+    rects1 = ax.bar(x - width/2, valores_reales, width, label='Original')
+    #Generamos las barras para el conjunto de personas de pie
+    rects2 = ax.bar(x + width/2, valores_prediccion_aciertos, width, label='Prediccion - Aciertos')
+    #Generamos las barras para el conjunto de personas de sentada
+    rects3 = ax.bar(x + width/2+ width, valores_prediccion_fallos, width, label='Prediccion - Fallos')
+
+    #Añadimos las etiquetas de identificacion de valores en el grafico
+    ax.set_ylabel('Numero de imagenes por directorio')
+    ax.set_title('Prediccion de imagenes con Zernike')
+    ax.set_xticks(x)
+    ax.set_xticklabels(directorios)
+    #Añadimos un legen() esto permite mmostrar con colores a que pertence cada valor.
+    ax.legend()
+
+    #Añadimos las etiquetas para cada barra
+    autolabel(rects1)
+    autolabel(rects2)
+    autolabel(rects3)
+    fig.tight_layout()
+    plt.savefig('graficaPresicionValores.png')
+    #Mostramos la grafica con el metodo show()
+    plt.show()
+```
 - Generacion de medidas de calidad y matriz de confusión
 ```sh
   def medidasDeCalidad(prediccion, salida):
@@ -77,3 +107,5 @@ aspectos
    macro avg       0.52      0.52      0.52        86
 weighted avg       0.55      0.53      0.54        86
 ```
+### Generación de gráfica para indicar la presición del descriptor de Zernike 
+![](graficaPresicionValores.png)
