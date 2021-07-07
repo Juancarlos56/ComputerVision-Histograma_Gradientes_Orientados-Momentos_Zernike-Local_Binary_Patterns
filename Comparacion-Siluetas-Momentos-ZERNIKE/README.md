@@ -1,6 +1,6 @@
 # Computer Vision para la identifiacion de Momentos Zernike
 
-## 1. Desarrollar un programa que permita comparar los momentos de Zernike de imágenes que representan la postura humana
+## 2. Desarrollar un programa que permita comparar los momentos de Zernike de imágenes que representan la postura humana
 
 - Calculo los momentos de Zernike de todas las imágenes contenidas en el archivo “CorpusSiluetas.zip”
 
