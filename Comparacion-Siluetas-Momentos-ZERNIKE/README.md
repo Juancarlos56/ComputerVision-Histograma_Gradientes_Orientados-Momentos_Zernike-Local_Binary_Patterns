@@ -1,8 +1,6 @@
 # Computer Vision para la identifiacion de Momentos Zernike
 
-1. Desarrollar un programa que permita calcular el Histograma de Gradientes Orientados (HOG) de
-zonas de interés en una imagen a fin de detectar peatones, para ello deberá considerar los siguientes
-aspectos
+## 1. Desarrollar un programa que permita comparar los momentos de Zernike de imágenes que representan la postura humana
 
 - Calculo los momentos de Zernike de todas las imágenes contenidas en el archivo “CorpusSiluetas.zip”
 
