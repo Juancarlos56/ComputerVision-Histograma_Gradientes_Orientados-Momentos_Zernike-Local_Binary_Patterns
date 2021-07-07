@@ -1,4 +1,4 @@
-# Computer Vision para la identifiacion Momentos Zernike
+# Computer Vision para la identifiacion de Momentos Zernike
 
 1. Desarrollar un programa que permita calcular el Histograma de Gradientes Orientados (HOG) de
 zonas de interés en una imagen a fin de detectar peatones, para ello deberá considerar los siguientes
