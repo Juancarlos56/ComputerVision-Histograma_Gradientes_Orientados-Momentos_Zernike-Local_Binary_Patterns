@@ -84,7 +84,7 @@ aspectos
     print (classification_report(prediccion, salida))
 ```
 ## Resultados
-### Matriz de Confusion
+### Matriz de Confusión
 ```sh
 [[19  5  5]
  [ 9 20 11]
