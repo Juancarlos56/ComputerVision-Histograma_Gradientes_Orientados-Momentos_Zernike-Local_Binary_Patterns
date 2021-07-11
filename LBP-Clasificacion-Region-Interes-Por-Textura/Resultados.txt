@@ -1,0 +1,24 @@
+---------------------RESULTADOS--------------------------------
+<<<<<<<<<<<PRESICION DEL CLASIFICADOR LBP>>>>>>>>>>>>>>>>
+Size del descriptor LBP: 256
+Clasificados correctamente: 109
+Clasificados Incorrectamente: 11
+Precision del modelo: 90.833333
+<<<<<<PRESICION DEL CLASIFICADOR LBP POR CATEGORIAS>>>>>>
+<<<<<<PRESICION DEL PARA LA CATEGORIA BANDED>>>>>>
+Clasificados correctamente: 28
+Clasificados Incorrectamente: 2
+Precision del modelo: 93.333333
+<<<<<<PRESICION DEL PARA LA CATEGORIA CHEQUERED>>>>>>
+Clasificados correctamente: 24
+Clasificados Incorrectamente: 6
+Precision del modelo: 80.000000
+<<<<<<PRESICION DEL PARA LA CATEGORIA CRACKED>>>>>>
+Clasificados correctamente: 28
+Clasificados Incorrectamente: 2
+Precision del modelo: 93.333333
+<<<<<<PRESICION DEL PARA LA CATEGORIA CRYSTALLINE>>>>>>
+Clasificados correctamente: 29
+Clasificados Incorrectamente: 1
+Precision del modelo: 96.666667
+Máximo valor histograma: 256 Escala: 12
