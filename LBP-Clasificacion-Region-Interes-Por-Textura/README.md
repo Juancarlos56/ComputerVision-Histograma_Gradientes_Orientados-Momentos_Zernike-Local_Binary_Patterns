@@ -13,9 +13,6 @@
 ```
 - Método programado que dada una imagen o región de interés permita calcular el descriptor LBP
 
-#### Referencia: 
-- L. Serpa-Andrade, V. Robles-Bykbaev, E. Calle-Ortiz, L. González-Delgado and G. Guevara-Segarra, "A proposal based on color descriptors and local binary patterns histogram as support tool in presumptive diagnosis of hiatus hernia," 2014 IEEE International Autumn Meeting on Power, Electronics and Computing (ROPEC), 2014, pp. 1-5, doi: 10.1109/ROPEC.2014.7036342.
-- Ojala, T., Pietikainen, M., & Maenpaa, T. (2002). Multiresolution gray-scale and rotation invariant texture classification with local binary patterns. IEEE Transactions on pattern analysis and machine intelligence, 24(7), 971-987.
 ```sh
    int* LBPDescriptor::LBP8(const int* data, int rows, int columns){
       const int
@@ -150,3 +147,8 @@ Clasificados Incorrectamente: 11
 - Precision del modelo: 96.666667
 ### Generación de gráfica para indicar la presición de LBP 
 ![](Resultados-Clasificacion-LBP.jpg)
+
+
+### Referencia: 
+- L. Serpa-Andrade, V. Robles-Bykbaev, E. Calle-Ortiz, L. González-Delgado and G. Guevara-Segarra, "A proposal based on color descriptors and local binary patterns histogram as support tool in presumptive diagnosis of hiatus hernia," 2014 IEEE International Autumn Meeting on Power, Electronics and Computing (ROPEC), 2014, pp. 1-5, doi: 10.1109/ROPEC.2014.7036342.
+- Ojala, T., Pietikainen, M., & Maenpaa, T. (2002). Multiresolution gray-scale and rotation invariant texture classification with local binary patterns. IEEE Transactions on pattern analysis and machine intelligence, 24(7), 971-987.
