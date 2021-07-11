@@ -13,6 +13,9 @@
 ```
 - Método programado que dada una imagen o región de interés permita calcular el descriptor LBP
 
+#### Referencia: 
+- L. Serpa-Andrade, V. Robles-Bykbaev, E. Calle-Ortiz, L. González-Delgado and G. Guevara-Segarra, "A proposal based on color descriptors and local binary patterns histogram as support tool in presumptive diagnosis of hiatus hernia," 2014 IEEE International Autumn Meeting on Power, Electronics and Computing (ROPEC), 2014, pp. 1-5, doi: 10.1109/ROPEC.2014.7036342.
+- 
 ```sh
    int* LBPDescriptor::LBP8(const int* data, int rows, int columns){
       const int
@@ -57,113 +60,93 @@
 
       return result;
    }
-   vector<int> LBPDescriptor::lbp(Mat img){
-      vector<int> descriptor;
+   
+```
+- Deberá calcular el descriptor LBP para al menos 2 imágenes distintas: clase 1 y clase 2.
+Para esta parte se tiene un dataset con 4 clases: link del dataset https://www.robots.ox.ac.uk/~vgg/data/dtd/index.html
+Los cuales son: 
+1. banded
+2. chequered
+3.  cracked
+4. crystalline
+5. test_Imagenes
 
-      int *data = (int *) malloc(img.rows*img.cols*sizeof(int));
+- Dado un nuevo grupo de imágenes deberá calcular la precisión de su clasificador basado en el descriptor LBP para identificar a qué clase pertenece la imagen (clase 1 o clase 2)
 
-      for(int i=0,k = 0;i<img.rows;i++){
-          for(int j=0;j<img.cols;j++){
-              //data[k]=img.at<uchar>(i,j);
-              *(data+k) = img.at<uchar>(i,j);
-              k++;
+```sh
+  //Funcion que nos permite calcular la distancia euclidea entre dos imagenes
+  double distanciaEuclidea(vector<int> *lbpOriginal, vector<int> *lbpCompare){
+
+    double distancia, resta = 0;
+
+    for (int i=0;i<256;i++){    //Bucle para restar componentes y elevarlas a 2
+        resta=resta+pow(lbpOriginal->at(i)- lbpCompare->at(i),2);
+    }
+    return distancia=sqrt(resta);
+    return 0.0;
+  }
+  
+  list <Categoria> :: iterator it;
+  for(it = listaClasificacionCategoriaResultados.begin(); it != listaClasificacionCategoriaResultados.end(); ++it){
+      //cout  << '\t' <<it->getDistancia() << ":"<< it->getCategoria()<< " : "<<it->getIdentificador()<< " : "<<it->getClasificador()<<'\t';   
+      if(it->getClasificador() == 0){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos0++;
+          }else {
+              contadorFallos0++;
+          }
+      }else if(it->getClasificador() == 1){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos1++;
+          }else {
+              contadorFallos1++;
+          }
+      }else if(it->getClasificador() == 2){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos2++;
+          }else {
+              contadorFallos2++;
+          }
+      }else if(it->getClasificador() == 3){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos3++;
+          }else {
+              contadorFallos3++;
           }
       }
 
-      int *desc = this->LBP8(data, img.rows, img.cols);
-      for(int i=0;i<256;i++){
-          descriptor.push_back(desc[i]);
+      if(it->getClasificador() == it->getCategoria()){
+          contadoAciertosTotales++;
+      }else {
+          contadoFallosTotales++;
       }
 
-      free(data);
-
-
-      return descriptor;
   }
-
-  //Obtencion de matriz LBP de la imagen original
-  descriptorLBP_imgOriginal = lbpd->lbp(imgGRAY);
 ```
-- Determinar qué posturas estan clasificas correcta o incorrectamente
-```sh
-  def presicionDelModelo(original, prediccion):
-    # Funcion para contar la cantidad de aciertos y fallos del clasificador #
-    cont_aciertos = 0; 
-    cont_fallos = 0;
-    # Recorrido de valores originales #
-    for i in range(len(original)):
-        if (original[i] == prediccion[i]):
-            cont_aciertos = cont_aciertos+1
-        else:
-            cont_fallos = cont_fallos + 1
-    
-    return cont_aciertos, cont_fallos
-```
-- Generación de gráfica para indicar la presición del descriptor de Zernike 
-```sh
-  def generarGraficaDePrecision(valores_reales, valores_prediccion_aciertos, valores_prediccion_fallos, directorios):
-    #Obtenemos la posicion de cada etiqueta en el eje de X
-    x = np.arange(len(directorios))
-    #tamaño de cada barra
-    width = 0.30
 
-    #Generamos las barras para el conjunto de personas acostadas
-    rects1 = ax.bar(x - width/2, valores_reales, width, label='Original')
-    #Generamos las barras para el conjunto de personas de pie
-    rects2 = ax.bar(x + width/2, valores_prediccion_aciertos, width, label='Prediccion - Aciertos')
-    #Generamos las barras para el conjunto de personas de sentada
-    rects3 = ax.bar(x + width/2+ width, valores_prediccion_fallos, width, label='Prediccion - Fallos')
-
-    #Añadimos las etiquetas de identificacion de valores en el grafico
-    ax.set_ylabel('Numero de imagenes por directorio')
-    ax.set_title('Prediccion de imagenes con Zernike')
-    ax.set_xticks(x)
-    ax.set_xticklabels(directorios)
-    #Añadimos un legen() esto permite mmostrar con colores a que pertence cada valor.
-    ax.legend()
-
-    #Añadimos las etiquetas para cada barra
-    autolabel(rects1)
-    autolabel(rects2)
-    autolabel(rects3)
-    fig.tight_layout()
-    plt.savefig('graficaPresicionValores.png')
-    #Mostramos la grafica con el metodo show()
-    plt.show()
-```
-- Generacion de medidas de calidad y matriz de confusión
-```sh
-  def medidasDeCalidad(prediccion, salida):
-    print (confusion_matrix(prediccion, salida)) 
-    accuracy = accuracy_score(prediccion, salida)
-    f1 = f1_score(prediccion, salida, average='weighted')
-    recall = recall_score(prediccion, salida, average='weighted')
-    precision = precision_score(prediccion, salida, average='weighted')
-    print (classification_report(prediccion, salida))
-```
 ## Resultados
-### Matriz de Confusión
+### PRESICION DEL CLASIFICADOR LBP
 ```sh
-[[19  5  5]
- [ 9 20 11]
- [ 1  9  7]]
+Size del descriptor LBP: 256
+Clasificados correctamente: 109
+Clasificados Incorrectamente: 11
 ```
-### Medidas de Calidad
- - Accuracy: 0.5348837209302325
- - F1 score: 0.5415304839723444
- - Recall: 0.5348837209302325
- - Precision: 0.5546898233509785
-### Reporte de Clasificación
-```sh
-              precision    recall  f1-score   support
-
-           0       0.66      0.66      0.66        29
-           1       0.59      0.50      0.54        40
-           2       0.30      0.41      0.35        17
-
-    accuracy                           0.53        86
-   macro avg       0.52      0.52      0.52        86
-weighted avg       0.55      0.53      0.54        86
-```
+### PRESICION DEL CLASIFICADOR LBP POR CATEGORIAS
+#### PRESICION DEL PARA LA CATEGORIA BANDED>>>>>>
+- Clasificados correctamente: 28
+- Clasificados Incorrectamente: 2
+- Precision del modelo: 93.333333
+#### PRESICION DEL PARA LA CATEGORIA CHEQUERED
+- Clasificados correctamente: 24 
+- Clasificados Incorrectamente: 6
+- Precision del modelo: 80.000000
+#### PRESICION DEL PARA LA CATEGORIA CRACKED
+- Clasificados correctamente: 28
+- Clasificados Incorrectamente: 2
+- Precision del modelo: 93.333333
+#### PRESICION DEL PARA LA CATEGORIA CRYSTALLINE 
+- Clasificados correctamente: 29
+- Clasificados Incorrectamente: 1
+- Precision del modelo: 96.666667
 ### Generación de gráfica para indicar la presición del descriptor de Zernike 
-![](graficaPresicionValores.png)
+![](Resultados-Clasificacion-LBP.jpg)
