@@ -132,7 +132,7 @@ Clasificados correctamente: 109
 Clasificados Incorrectamente: 11
 ```
 ### PRESICION DEL CLASIFICADOR LBP POR CATEGORIAS
-#### PRESICION DEL PARA LA CATEGORIA BANDED>>>>>>
+#### PRESICION DEL PARA LA CATEGORIA BANDED
 - Clasificados correctamente: 28
 - Clasificados Incorrectamente: 2
 - Precision del modelo: 93.333333
@@ -148,5 +148,5 @@ Clasificados Incorrectamente: 11
 - Clasificados correctamente: 29
 - Clasificados Incorrectamente: 1
 - Precision del modelo: 96.666667
-### Generación de gráfica para indicar la presición del descriptor de Zernike 
+### Generación de gráfica para indicar la presición de LBP 
 ![](Resultados-Clasificacion-LBP.jpg)
