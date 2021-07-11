@@ -21,7 +21,7 @@ double distanciaEuclidea(vector<int> *lbpOriginal, vector<int> *lbpCompare){
         resta=resta+pow(lbpOriginal->at(i)- lbpCompare->at(i),2);
     }
     return distancia=sqrt(resta);
-    return 0.0;
+    
 }
 
 

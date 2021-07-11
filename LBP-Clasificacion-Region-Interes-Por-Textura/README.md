@@ -1,109 +1,154 @@
 # Computer Vision para la identifiacion de Momentos Zernike
 
-## 2. Desarrollar un programa que permita comparar los momentos de Zernike de imágenes que representan la postura humana
+## 3. Desarrollar un programa que permita clasificar una región de interés de una imagen, dada su textura
 
-- Calculo los momentos de Zernike de todas las imágenes contenidas en el archivo “CorpusSiluetas.zip”
-
-```sh
-  pip install mahotas
-  import mahotas
-  def obtencionMomentosZernike(image):
-    # Calculamos los momentos de zernike con mahotas paso de un canal en especifico en este  #
-    # caso seria el canal rojo y pasamos el tamano de la imagen que son de 512 #
-    return mahotas.features.zernike_moments(image[:, :, 0], 512)
-```
-- Medir la distancia Euclídea 
+- Programar un método que permita convertir una imagen de un espacio de color en el espacio CIELab
 
 ```sh
-  def calculoDistanciaEuclidea(momentosImgOriginal, momentosImgAComparar):
-    # definicion de variable para almacenar resultado de la resta de los valores de cada momento #
-    resta = 0.0
-    # Recorrido de los momentos de nuestras imagenes #
-    for i in range(len(momentosImgOriginal)):
-        resta=resta+pow(momentosImgOriginal[i]- momentosImgAComparar[i],2);
-    # Retorno de la distancia obtenida entre las imagenes #
-    return sqrt(resta);
+  //lECUTA de imagen a ser comparada, imagen original del test
+  img = imread(PATHS_Test[i]+pathImagenDirectorioActualString);
+  //resize(img, img, cv::Size(), 0.75, 0.75);
+  //Pasamos la imagen al espacio de color CIELAB
+  cvtColor(img, img, COLOR_RGB2Lab);
 ```
-- Determinar qué posturas estan clasificas correcta o incorrectamente
-```sh
-  def presicionDelModelo(original, prediccion):
-    # Funcion para contar la cantidad de aciertos y fallos del clasificador #
-    cont_aciertos = 0; 
-    cont_fallos = 0;
-    # Recorrido de valores originales #
-    for i in range(len(original)):
-        if (original[i] == prediccion[i]):
-            cont_aciertos = cont_aciertos+1
-        else:
-            cont_fallos = cont_fallos + 1
-    
-    return cont_aciertos, cont_fallos
-```
-- Generación de gráfica para indicar la presición del descriptor de Zernike 
-```sh
-  def generarGraficaDePrecision(valores_reales, valores_prediccion_aciertos, valores_prediccion_fallos, directorios):
-    #Obtenemos la posicion de cada etiqueta en el eje de X
-    x = np.arange(len(directorios))
-    #tamaño de cada barra
-    width = 0.30
+- Método programado que dada una imagen o región de interés permita calcular el descriptor LBP
 
-    #Generamos las barras para el conjunto de personas acostadas
-    rects1 = ax.bar(x - width/2, valores_reales, width, label='Original')
-    #Generamos las barras para el conjunto de personas de pie
-    rects2 = ax.bar(x + width/2, valores_prediccion_aciertos, width, label='Prediccion - Aciertos')
-    #Generamos las barras para el conjunto de personas de sentada
-    rects3 = ax.bar(x + width/2+ width, valores_prediccion_fallos, width, label='Prediccion - Fallos')
-
-    #Añadimos las etiquetas de identificacion de valores en el grafico
-    ax.set_ylabel('Numero de imagenes por directorio')
-    ax.set_title('Prediccion de imagenes con Zernike')
-    ax.set_xticks(x)
-    ax.set_xticklabels(directorios)
-    #Añadimos un legen() esto permite mmostrar con colores a que pertence cada valor.
-    ax.legend()
-
-    #Añadimos las etiquetas para cada barra
-    autolabel(rects1)
-    autolabel(rects2)
-    autolabel(rects3)
-    fig.tight_layout()
-    plt.savefig('graficaPresicionValores.png')
-    #Mostramos la grafica con el metodo show()
-    plt.show()
-```
-- Generacion de medidas de calidad y matriz de confusión
 ```sh
-  def medidasDeCalidad(prediccion, salida):
-    print (confusion_matrix(prediccion, salida)) 
-    accuracy = accuracy_score(prediccion, salida)
-    f1 = f1_score(prediccion, salida, average='weighted')
-    recall = recall_score(prediccion, salida, average='weighted')
-    precision = precision_score(prediccion, salida, average='weighted')
-    print (classification_report(prediccion, salida))
+   int* LBPDescriptor::LBP8(const int* data, int rows, int columns){
+      const int
+      *p0 = data,
+      *p1 = p0 + 1,
+      *p2 = p1 + 1,
+      *p3 = p2 + columns,
+      *p4 = p3 + columns,
+      *p5 = p4 - 1,
+      *p6 = p5 - 1,
+      *p7 = p6 - columns,
+      *center = p7 + 1;
+      int r,c,cntr;
+      unsigned int value;
+      int* result = (int*) malloc(256*sizeof(int));
+      memset(result, 0, 256*sizeof(int));
+      for (r=0;r<rows-2;r++){
+          for (c=0;c<columns-2;c++){
+              value = 0;
+              cntr = *center - 1;
+              compab_mask_inc(p0,0);
+              compab_mask_inc(p1,1);
+              compab_mask_inc(p2,2);
+              compab_mask_inc(p3,3);
+              compab_mask_inc(p4,4);
+              compab_mask_inc(p5,5);
+              compab_mask_inc(p6,6);
+              compab_mask_inc(p7,7);
+              center++;
+              result[value]++;
+          }
+          p0 += 2;
+          p1 += 2;
+          p2 += 2;
+          p3 += 2;
+          p4 += 2;
+          p5 += 2;
+          p6 += 2;
+          p7 += 2;
+          center += 2;
+      }
+
+      return result;
+   }
+   
 ```
+- Deberá calcular el descriptor LBP para al menos 2 imágenes distintas: clase 1 y clase 2.
+Para esta parte se tiene un dataset con 4 clases: link del dataset https://www.robots.ox.ac.uk/~vgg/data/dtd/index.html
+Los cuales son: 
+1. banded
+2. chequered
+3.  cracked
+4. crystalline
+5. test_Imagenes
+
+- Dado un nuevo grupo de imágenes deberá calcular la precisión de su clasificador basado en el descriptor LBP para identificar a qué clase pertenece la imagen (clase 1 o clase 2)
+
+```sh
+  //Funcion que nos permite calcular la distancia euclidea entre dos imagenes
+  double distanciaEuclidea(vector<int> *lbpOriginal, vector<int> *lbpCompare){
+
+    double distancia, resta = 0;
+
+    for (int i=0;i<256;i++){    //Bucle para restar componentes y elevarlas a 2
+        resta=resta+pow(lbpOriginal->at(i)- lbpCompare->at(i),2);
+    }
+    return distancia=sqrt(resta);
+    return 0.0;
+  }
+  
+  list <Categoria> :: iterator it;
+  for(it = listaClasificacionCategoriaResultados.begin(); it != listaClasificacionCategoriaResultados.end(); ++it){
+      //cout  << '\t' <<it->getDistancia() << ":"<< it->getCategoria()<< " : "<<it->getIdentificador()<< " : "<<it->getClasificador()<<'\t';   
+      if(it->getClasificador() == 0){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos0++;
+          }else {
+              contadorFallos0++;
+          }
+      }else if(it->getClasificador() == 1){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos1++;
+          }else {
+              contadorFallos1++;
+          }
+      }else if(it->getClasificador() == 2){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos2++;
+          }else {
+              contadorFallos2++;
+          }
+      }else if(it->getClasificador() == 3){
+          if(it->getClasificador() == it->getCategoria()){
+              contadorAciertos3++;
+          }else {
+              contadorFallos3++;
+          }
+      }
+
+      if(it->getClasificador() == it->getCategoria()){
+          contadoAciertosTotales++;
+      }else {
+          contadoFallosTotales++;
+      }
+
+  }
+```
+
 ## Resultados
-### Matriz de Confusión
+### PRESICION DEL CLASIFICADOR LBP
 ```sh
-[[19  5  5]
- [ 9 20 11]
- [ 1  9  7]]
+Size del descriptor LBP: 256
+Clasificados correctamente: 109
+Clasificados Incorrectamente: 11
 ```
-### Medidas de Calidad
- - Accuracy: 0.5348837209302325
- - F1 score: 0.5415304839723444
- - Recall: 0.5348837209302325
- - Precision: 0.5546898233509785
-### Reporte de Clasificación
-```sh
-              precision    recall  f1-score   support
+### PRESICION DEL CLASIFICADOR LBP POR CATEGORIAS
+#### PRESICION DEL PARA LA CATEGORIA BANDED
+- Clasificados correctamente: 28
+- Clasificados Incorrectamente: 2
+- Precision del modelo: 93.333333
+#### PRESICION DEL PARA LA CATEGORIA CHEQUERED
+- Clasificados correctamente: 24 
+- Clasificados Incorrectamente: 6
+- Precision del modelo: 80.000000
+#### PRESICION DEL PARA LA CATEGORIA CRACKED
+- Clasificados correctamente: 28
+- Clasificados Incorrectamente: 2
+- Precision del modelo: 93.333333
+#### PRESICION DEL PARA LA CATEGORIA CRYSTALLINE 
+- Clasificados correctamente: 29
+- Clasificados Incorrectamente: 1
+- Precision del modelo: 96.666667
+### Generación de gráfica para indicar la presición de LBP 
+![](Resultados-Clasificacion-LBP.jpg)
 
-           0       0.66      0.66      0.66        29
-           1       0.59      0.50      0.54        40
-           2       0.30      0.41      0.35        17
 
-    accuracy                           0.53        86
-   macro avg       0.52      0.52      0.52        86
-weighted avg       0.55      0.53      0.54        86
-```
-### Generación de gráfica para indicar la presición del descriptor de Zernike 
-![](graficaPresicionValores.png)
+### Referencia: 
+- L. Serpa-Andrade, V. Robles-Bykbaev, E. Calle-Ortiz, L. González-Delgado and G. Guevara-Segarra, "A proposal based on color descriptors and local binary patterns histogram as support tool in presumptive diagnosis of hiatus hernia," 2014 IEEE International Autumn Meeting on Power, Electronics and Computing (ROPEC), 2014, pp. 1-5, doi: 10.1109/ROPEC.2014.7036342.
+- Ojala, T., Pietikainen, M., & Maenpaa, T. (2002). Multiresolution gray-scale and rotation invariant texture classification with local binary patterns. IEEE Transactions on pattern analysis and machine intelligence, 24(7), 971-987.
