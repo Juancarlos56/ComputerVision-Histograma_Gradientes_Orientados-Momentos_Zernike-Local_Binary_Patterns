@@ -11,17 +11,17 @@
 #include <opencv2/objdetect/objdetect.hpp> //Libreria para deteccion de objetos
 using namespace std;
 using namespace cv;
- 
- 
+
+
 Mat frame
 Mat gx, gy; 
 Mat decimal; 
 Mat angulo;
 Mat magnitud;
 HOGDescriptor hog;
- 
- 
- 
+
+
+
 Mat hogRectangular (Mat frame, Mat &deteccion1){
     vector<Rect> deteccionesREClista;
     hog.detectMultiScale(frame, deteccionesREClista, 0, Size(16, 16), Size(128, 128), 1.05, 2, false);
@@ -30,7 +30,7 @@ Mat hogRectangular (Mat frame, Mat &deteccion1){
     int cont = 0;
     int ancho= 0;
     int alto = 0;
- 
+
     for (size_t i = 0; i < deteccionesREClista.size(); i++) {
         r = deteccionesREClista[i];
         ancho = r.width;
@@ -42,15 +42,15 @@ Mat hogRectangular (Mat frame, Mat &deteccion1){
     cout << " HOG RECTANGULO : " << deteccionesREClista.size()<< endl;
     return deteccion1;
 }
- 
+
 Mat hogCircular (Mat frame2, Mat &deteccion2) {
- 
+
     Mat det2 = frame2.clone();
     Mat framegray;
     cvtColor(det2, framegray, COLOR_BGR2GRAY);
     medianBlur(framegray, framegray, 5);
     vector<Vec3f> listaDetCirculos;
- 
+
     HoughCircles(framegray, listaDetCirculos, HOUGH_GRADIENT, 1, framegray.rows / 2, 105, 30, 1, 50);     
    
     for (size_t i = 0; i < listaDetCirculos.size(); i++) {
@@ -62,16 +62,16 @@ Mat hogCircular (Mat frame2, Mat &deteccion2) {
     cout << "HOG CIRCULAR: " << listaDetCirculos.size() << endl;
     return det2;
 }
- 
- 
+
+
 int main(int argc, char* argv[]) {
     //Presentacion del video
- 
+
     Mat videoDetRec;
     Mat videoDetCir;
     Mat frameDeteccion;
   
- 
+
     VideoCapture video("peatones.mp4");
     if (video.isOpened()) {
         namedWindow("Video Normal", WINDOW_AUTOSIZE);
@@ -108,5 +108,4 @@ int main(int argc, char* argv[]) {
         }
         destroyAllWindows();
     }
-
 };
